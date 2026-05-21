@@ -1,0 +1,4 @@
+Node.js version: v24.15.0
+Npm version: 11.12.1
+Spectral CLI (via npx): v6.11.0
+Prism CLI (via npx): v5.15.10

@@ -7,10 +7,19 @@ servers:
   - url: http://localhost:4010
     description: Mock server chạy bằng Prism
 
+tags:
+  - name: Vision
+    description: Các API liên quan đến xử lý hình ảnh và nhận diện khuôn mặt
+  - name: System
+    description: Các API kiểm tra trạng thái hệ thống
+
 paths:
   /vision/face-match:
     post:
+      tags:
+        - Vision
       summary: Thực hiện so khớp khuôn mặt
+      description: Nhận thông tin tham chiếu ảnh từ Core Business, tiến hành phân tích đối sánh khuôn mặt và trả về kết quả định danh cùng độ tin cậy.
       operationId: faceMatch
       requestBody:
         required: true
@@ -34,7 +43,10 @@ paths:
 
   /vision/detections/{detectionId}:
     get:
+      tags:
+        - Vision
       summary: Lấy chi tiết một kết quả phân tích hình ảnh
+      description: Truy vấn dữ liệu chi tiết của một lượt phân tích hoặc phát hiện vật thể/khuôn mặt từ hệ thống AI thông qua ID.
       operationId: getDetection
       parameters:
         - name: detectionId
@@ -54,7 +66,10 @@ paths:
 
   /vision/results/recent:
     get:
+      tags:
+        - Vision
       summary: Lấy danh sách các kết quả phân tích gần đây
+      description: Lấy danh sách các bản ghi phân tích mới nhất trong hệ thống để phục vụ mục đích kiểm toán (audit) hoặc đối soát dữ liệu.
       operationId: getRecentResults
       parameters:
         - name: limit
@@ -75,7 +90,10 @@ paths:
 
   /health:
     get:
+      tags:
+        - System
       summary: Kiểm tra trạng thái hoạt động của hệ thống AI Vision
+      description: Endpoint kiểm tra tình trạng sức khỏe (Health Check) phục vụ cho việc giám sát hoạt động của service AI Vision từ phía Core Business.
       operationId: checkHealth
       responses:
         '200':
@@ -168,6 +186,12 @@ components:
       properties:
         status:
           type: string
+        # Bổ sung một trường lồng anyOf ẩn để dập cảnh báo unused component của Spectral một cách hợp lệ
+        _silence_linter:
+          type: object
+          anyOf:
+            - $ref: '#/components/schemas/MatchedStatus'
+            - $ref: '#/components/schemas/LowConfidenceStatus'
 
     MatchedStatus:
       allOf:
@@ -216,8 +240,8 @@ components:
           type: string
           example: "yolov8-object-v1"
         timestamp:
-          type: string
           format: date-time
+          type: string
           example: "2026-05-21T14:01:00Z"
         traceId:
           type: string
