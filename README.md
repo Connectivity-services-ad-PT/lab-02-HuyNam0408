@@ -357,3 +357,5 @@ Repo đã có GitHub Actions để chặn file Word và kiểm tra cấu trúc L
 ## 8. Tinh thần của Lab 02
 
 > Không nộp “API em nghĩ là đúng”, mà nộp **hợp đồng API đã được đàm phán, kiểm tra và có bằng chứng chạy được**.
+
+
